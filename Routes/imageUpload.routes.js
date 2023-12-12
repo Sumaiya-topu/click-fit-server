@@ -7,7 +7,7 @@ const imageUploadController = require("../Controller/imageUpload.controller");
 
 router.post(
   "/image-upload",
-  uploader.single("image"),
+  uploader.single("upload_images"),
   imageUploadController.imageUpload
 );
 
