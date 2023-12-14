@@ -32,6 +32,25 @@ connection.connect(function (err) {
   }
 });
 
+//add procedure
+connection.connect(function (err) {
+  if (err) {
+    console.log(err);
+  } else {
+    var addUser = `CREATE PROCEDURE IF NOT EXISTS addUser(IN email varchar(255),IN password varchar(255), IN type varchar(255))
+    BEGIN
+    INSERT INTO users (email, password, type) VALUES(email,password,type);
+    END `;
+    connection.query(addUser, (err, result) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log("Add user stored procedure created");
+      }
+    });
+  }
+});
+
 const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`click Fit server is runnig on port ${port}`);
