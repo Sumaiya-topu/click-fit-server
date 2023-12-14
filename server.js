@@ -37,10 +37,14 @@ connection.connect(function (err) {
   if (err) {
     console.log(err);
   } else {
-    var addUser = `CREATE PROCEDURE IF NOT EXISTS addUser(IN email varchar(255),IN password varchar(255), IN type varchar(255))
-    BEGIN
-    INSERT INTO users (email, password, type) VALUES(email,password,type);
-    END `;
+    var addUser = `CREATE PROCEDURE IF NOT EXISTS addUser(
+    IN p_email VARCHAR(255),
+    IN p_password VARCHAR(255),
+    IN p_type VARCHAR(255)
+)
+BEGIN
+    INSERT INTO users (email, password, type) VALUES (p_email, p_password, p_type);
+END  `;
     connection.query(addUser, (err, result) => {
       if (err) {
         console.log(err);
@@ -49,6 +53,23 @@ connection.connect(function (err) {
       }
     });
   }
+});
+
+// add user endpoint
+app.post("/add-user", async (req, res) => {
+  const { email, password, type } = req.body;
+  console.log("req.body", req.body);
+  connection.query(
+    "Call addUser(?,?,?)",
+    [email, password, type],
+    (err, result) => {
+      if (err) {
+        console.error("Error calling addUser stored procedure:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      }
+      res.status(200).json({ message: "User added successfully" });
+    }
+  );
 });
 
 const port = process.env.PORT || 5000;
