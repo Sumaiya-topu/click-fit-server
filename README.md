@@ -13,3 +13,5 @@ _The uploaded image endpoint ('localhost:5000/api/v1/upload/image-upload')_
 -MySql
 -Express js
 _The addUser procedure is being called in the ('localhost:5000/add-user') endpoint_
+
+###Server start command - npm run dev###
